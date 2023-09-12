@@ -171,6 +171,7 @@ export default class Recorder {
         let dataArray = new Float32Array(this.analyser.fftSize);
         // 将数据拷贝到dataArray中。
         this.analyser.getFloatTimeDomainData(dataArray);
+        console.log("data-arr", dataArray);
         return dataArray;
     }
 
