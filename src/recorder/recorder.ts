@@ -1,4 +1,4 @@
-import { compress, encodePCM, encodeWAV } from '../transform/transform';
+import {compress, encodePCM, encodeWAV} from '../transform/transform';
 
 declare let window: any;
 declare let Math: any;
@@ -65,7 +65,7 @@ export default class Recorder {
         this.setNewOption(options);
 
         // 判断端字节序
-        this.littleEdian = (function() {
+        this.littleEdian = (function () {
             let buffer = new ArrayBuffer(2);
             new DataView(buffer).setInt16(0, 256, true);
             return new Int16Array(buffer)[0] === 256;
@@ -168,10 +168,9 @@ export default class Recorder {
     }
 
     getAnalyseData() {
-        let dataArray = new Uint8Array(this.analyser.frequencyBinCount);
+        let dataArray = new Float32Array(this.analyser.fftSize);
         // 将数据拷贝到dataArray中。
-        this.analyser.getByteTimeDomainData(dataArray);
-
+        this.analyser.getFloatTimeDomainData(dataArray);
         return dataArray;
     }
 
@@ -247,7 +246,7 @@ export default class Recorder {
         this.context = new (window.AudioContext || window.webkitAudioContext)();
 
         this.analyser = this.context.createAnalyser();  // 录音分析节点
-        this.analyser.fftSize = 2048;                   // 表示存储频域的大小
+        this.analyser.fftSize = 512;                   // 表示存储频域的大小
 
         // 第一个参数表示收集采样的大小，采集完这么多后会触发 onaudioprocess 接口一次，该值一般为1024,2048,4096等，一般就设置为4096
         // 第二，三个参数分别是输入的声道数和输出的声道数，保持一致即可。
@@ -285,9 +284,9 @@ export default class Recorder {
             //     // 计算录音大小
             //     this.fileSize = pcm.byteLength * this.tempPCM.length;
             // } else {
-                // 计算录音大小
-                this.fileSize = Math.floor(this.size / Math.max( this.inputSampleRate / this.outputSampleRate, 1))
-                    * (this.oututSampleBits / 8)
+            // 计算录音大小
+            this.fileSize = Math.floor(this.size / Math.max(this.inputSampleRate / this.outputSampleRate, 1))
+                * (this.oututSampleBits / 8)
             // }
             // 为何此处计算大小需要分开计算。原因是先录后转时，是将所有数据一起处理，边录边转是单个 4096 处理，
             // 有小数位的偏差。
@@ -341,14 +340,14 @@ export default class Recorder {
         }
 
         if (navigator.mediaDevices.getUserMedia === undefined) {
-            navigator.mediaDevices.getUserMedia = function(constraints) {
+            navigator.mediaDevices.getUserMedia = function (constraints) {
                 let getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
                 if (!getUserMedia) {
                     return Promise.reject(new Error('浏览器不支持 getUserMedia !'));
                 }
 
-                return new Promise(function(resolve, reject) {
+                return new Promise(function (resolve, reject) {
                     getUserMedia.call(navigator, constraints, resolve, reject);
                 });
             }
