@@ -163,7 +163,6 @@ export default class Recorder {
         this.clearRecordStatus();
         // 结束流
         this.stopStream();
-
         return this.closeAudioContext();
     }
 
