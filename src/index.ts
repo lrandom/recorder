@@ -1,5 +1,5 @@
-import { downloadPCM, downloadWAV, download } from './download/download';
-import { compress, encodePCM, encodeWAV } from './transform/transform';
+import {downloadPCM, downloadWAV, download} from './download/download';
+import {compress, encodePCM, encodeWAV} from './transform/transform';
 import Player from './player/player';
 import Recorder from './recorder/recorder';
 
@@ -236,7 +236,7 @@ class Index extends Recorder {
      * @memberof Recorder
      */
     getPCMBlob(): any {
-        return new Blob([ this.getPCM() ]);
+        return new Blob([this.getPCM()]);
     }
 
     /**
@@ -262,7 +262,8 @@ class Index extends Recorder {
 
         // PCM增加44字节的头就是WAV格式了
         return encodeWAV(pcmTemp, this.inputSampleRate,
-            this.outputSampleRate, this.config.numChannels, this.oututSampleBits, this.littleEdian);;
+            this.outputSampleRate, this.config.numChannels, this.oututSampleBits, this.littleEdian);
+        ;
     }
 
     /**
@@ -272,7 +273,7 @@ class Index extends Recorder {
      * @memberof Recorder
      */
     getWAVBlob(): any {
-        return new Blob([ this.getWAV() ], { type: 'audio/wav' });
+        return new Blob([this.getWAV()], {type: 'audio/wav'});
     }
 
     /**
@@ -303,7 +304,7 @@ class Index extends Recorder {
         const all = this.getPCM();
         const length = all.byteLength;
         const littleEdian = this.littleEdian
-        const res = { left: null, right: null }
+        const res = {left: null, right: null}
 
         if (this.config.numChannels === 2) {
             // 双通道,劈开

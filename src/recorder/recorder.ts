@@ -180,17 +180,16 @@ export default class Recorder {
         return dataArray;
     }
 
-    getAverageVolume(array) {
+    getAverageVolume() {
+        const arr = this.getFrequencyData();
         let values = 0;
-        let average;
-        let length = array.length;
+        let length = arr.length;
 
         // get all the frequency amplitudes
         for (let i = 0; i < length; i++) {
-            values += array[i];
+            values += arr[i];
         }
-        average = values / length;
-        return average;
+        return values / length;
     }
 
     // 获取录音数据
