@@ -173,6 +173,26 @@ export default class Recorder {
         return dataArray;
     }
 
+    getFrequencyData() {
+        let dataArray = new Uint8Array(this.analyser.frequencyBinCount);
+        // 将数据拷贝到dataArray中。
+        this.analyser.getByteFrequencyData(dataArray);
+        return dataArray;
+    }
+
+    getAverageVolume(array) {
+        let values = 0;
+        let average;
+        let length = array.length;
+
+        // get all the frequency amplitudes
+        for (let i = 0; i < length; i++) {
+            values += array[i];
+        }
+        average = values / length;
+        return average;
+    }
+
     // 获取录音数据
     getData() {
         let data: any = this.flat();
